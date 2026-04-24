@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plant Disease Classifier</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Plant Disease Classifier</h1>
+        <p class="subtitle">Upload a leaf image to detect disease</p>
+
+        {% if error %}
+            <div class="error">{{ error }}</div>
+        {% endif %}
+
+        <form action="/predict" method="post" enctype="multipart/form-data">
+            <label for="image" class="file-label">
+                Choose an image
+                <input type="file" name="image" id="image" accept="image/*" capture="environment" required>
+            </label>
+            <button type="submit">Classify</button>
+        </form>
+
+        <div class="info">
+            <p><strong>Supported plants:</strong> Apple, Corn, Pepper, Potato, Tomato</p>
+            <p><strong>Model:</strong> EfficientNetB0 - 23 disease classes</p>
+        </div>
+    </div>
+</body>
+</html>
+<!-- Mobile & PWA -->
+<meta name="theme-color" content="#2d6a4f">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="PlantScan">
+<link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}">
+<link rel="apple-touch-icon" href="{{ url_for('static', filename='icon-192.png') }}">
