@@ -1,0 +1,13 @@
+__pycache__/
+*.pyc
+*.pyo
+.git/
+.gitignore
+.vscode/
+.DS_Store
+convert_model.ipynb
+*.ipynb_checkpoints
+venv/
+plant-venv/
+plant-deploy/
+*.md

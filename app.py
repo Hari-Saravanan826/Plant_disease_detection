@@ -4,8 +4,10 @@ from tensorflow.keras.applications.efficientnet import preprocess_input
 from tensorflow.keras.preprocessing import image
 import numpy as np
 import io
+import os
 
 app = Flask(__name__)
+app.config['MAX_CONTENT_LENGTH'] = 10 * 1024 * 1024  # reject uploads over 10 MB
 
 # Load model once at startup
 model = load_model('model/efficientnet_plant_disease.keras', compile=False)
@@ -58,7 +60,10 @@ def predict():
         return render_template('index.html', error='No file selected.')
 
     # Load and prepare the image - same pipeline as training
-    img = image.load_img(io.BytesIO(file.read()), target_size=(224, 224))
+    try:
+        img = image.load_img(io.BytesIO(file.read()), target_size=(224, 224))
+    except Exception:
+        return render_template('index.html', error='That file is not a valid image.')
     x = image.img_to_array(img)
     x = np.expand_dims(x, axis=0)
     x = preprocess_input(x)  # no-op for EfficientNet, kept for consistency with training
@@ -81,4 +86,5 @@ def predict():
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=8000, debug=True)
+    # Debug mode exposes an interactive debugger, so it is opt-in for local use only
+    app.run(host='0.0.0.0', port=8000, debug=os.getenv('FLASK_DEBUG') == '1')

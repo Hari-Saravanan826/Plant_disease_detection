@@ -1,0 +1,10 @@
+__pycache__/
+*.pyc
+.DS_Store
+.vscode/
+.ipynb_checkpoints/
+venv/
+plant-venv/
+plant-deploy/
+.env
+convert_model.ipynb
